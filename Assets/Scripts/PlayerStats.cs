@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour {
+public class PlayerStats {
     public static int UserExp { get; private set; }
     public static int level { get; private set; }
     public const int baseExp = 100;
