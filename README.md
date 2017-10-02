@@ -5,10 +5,10 @@
 	* よりレベルが上がりやすく。
 
 + 内部アルゴリズムを一部変更
-	*より軽量に。
+	* より軽量に。
 
 + ガベージコレクタの呼び出しタイミングを変更
-	*ゾンビ化してメモリリークしていたオブジェクトが破棄されるように。
+	* ゾンビ化してメモリリークしていたオブジェクトが破棄されるように。
 
 - 既存のバグを修正
 
@@ -25,13 +25,16 @@ Space 弾を発射
 
 ## 諸注意事項
 1.起動時、Screen resolutionを1366x768にすること。* それ以外の場合、一部レイアウトが崩れる恐れあり。
+
 2.起動時、Graphics qualityをGood以下にすること。* 描画クオリティを上げると非常に重くなる可能性があります。
 
 ## ライセンス
 このソフトウェアは、以下のライセンスの元利用できます。
+
 BSD 2-clause "Simplified" License
 
 以下、ライセンス条項
+```
 BSD 2-Clause License
 
 Copyright (c) 2017, frodo821
@@ -57,3 +60,4 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
