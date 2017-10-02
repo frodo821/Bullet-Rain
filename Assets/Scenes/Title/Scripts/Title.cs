@@ -16,6 +16,14 @@ public class Title : MonoBehaviour {
     void Start()
     {
         mode = (GameMode)PlayerPrefs.GetInt("difficulty", (int)GameMode.Normal);
+        gamemode.options.Clear();
+        foreach(var i in System.Enum.GetValues(typeof(GameMode)))
+        {
+            gamemode.options.Add(
+                new Dropdown.OptionData(
+                    i.ToString()
+                    ));
+        }
         Time.timeScale = 0f;
         gamemode.value = (int)mode - 1;
         ShowRank();

@@ -12,6 +12,11 @@ public class BulletStyle : MonoBehaviour {
             BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
+    void OnDestroy()
+    {
+        fire = null;
+    }
+
     public void FireBullet(GameObject b, int f = 0)
     {
         fire.Invoke(gameObject.GetComponent<BulletStyle>(), new object[] { b, f });

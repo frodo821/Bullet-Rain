@@ -20,19 +20,13 @@ public class Bullet : MyScriptBase
                 baseDamage += (int)Title.mode;
             }
         }
-        catch (MissingReferenceException) { }
+        catch (MissingReferenceException) { parent = null; }
 	}
 	
 	// Update is called once per frame
 	void Update () {
         transform.Translate(transform.TransformDirection(Vector2.up) * speed * Time.deltaTime);
-        try {
-            if (Vector2.Distance(parent.position, transform.position) > destoryDistance)
-            {
-                DestroyImmediate(gameObject);
-            }
-        }
-        catch (MissingReferenceException) {}
+        
         if (
             transform.position.x < worldLimitMin.x - 0.3f ||
             transform.position.x > worldLimitMax.x + 0.3f ||
@@ -41,10 +35,19 @@ public class Bullet : MyScriptBase
         {
             DestroyImmediate(gameObject);
         }
-	}
+        if (parent == null) return;
+        try
+        {
+            if (Vector2.Distance(parent.position, transform.position) > destoryDistance)
+            {
+                DestroyImmediate(gameObject);
+            }
+        }
+        catch (MissingReferenceException) { parent = null; }
+    }
 
     void OnCollisionEnter2D(Collision2D col)
-    {;
+    {
         col.gameObject.SendMessage("OnDamaged", baseDamage + pharse * damageMultiplier);
         Destroy(gameObject);
     }
