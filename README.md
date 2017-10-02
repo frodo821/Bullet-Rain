@@ -1,37 +1,37 @@
-#Bullet Rain version 0.0.6
+# Bullet Rain version 0.0.6
 
-## version 0.0.5����̕ύX *�����I�ύX�̂�*
-+�O���[�o�����x���̃o�����X����
-	* ��背�x�����オ��₷���B
+## version 0.0.5からの変更 *内部的変更のみ*
++ グローバルレベルのバランス調整
+	* よりレベルが上がりやすく。
 
-+�����A���S���Y�����ꕔ�ύX
-	*���y�ʂɁB
++ 内部アルゴリズムを一部変更
+	*より軽量に。
 
-+ �K�x�[�W�R���N�^�̌Ăяo���^�C�~���O��ύX
-	*�]���r�����ă��������[�N���Ă����I�u�W�F�N�g���j�������悤�ɁB
++ ガベージコレクタの呼び出しタイミングを変更
+	*ゾンビ化してメモリリークしていたオブジェクトが破棄されるように。
 
-- �����̃o�O���C��
+- 既存のバグを修正
 
-## �����I�ȃA�b�v�f�[�g
-+ �G�̎�ނ�ǉ�
-+ �t�F�[�Y���Ƃ̓G�̋����̕ύX
-+ �{�X�̎�ނ�ǉ�
-+ �V���b�v�A������ǉ�
-- ���̑��o�O�t�B�N�X
+## 将来的なアップデート
++ 敵の種類を追加
++ フェーズごとの敵の強さの変更
++ ボスの種類を追加
++ ショップ、強化を追加
+- その他バグフィクス
 
-## ����
-W/A/S/D �ړ�
-Space �e�𔭎�
+## 操作
+W/A/S/D 移動
+Space 弾を発射
 
-## �����ӎ���
-1.�N�����AScreen resolution��1366x768�ɂ��邱�ƁB* ����ȊO�̏ꍇ�A�ꕔ���C�A�E�g������鋰�ꂠ��B
-2.�N�����AGraphics quality��Good�ȉ��ɂ��邱�ƁB* �`��N�I���e�B���グ��Ɣ��ɏd���Ȃ�\��������܂��B
+## 諸注意事項
+1.起動時、Screen resolutionを1366x768にすること。* それ以外の場合、一部レイアウトが崩れる恐れあり。
+2.起動時、Graphics qualityをGood以下にすること。* 描画クオリティを上げると非常に重くなる可能性があります。
 
-## ���C�Z���X
-���̃\�t�g�E�F�A�́A�ȉ��̃��C�Z���X�̌����p�ł��܂��B
+## ライセンス
+このソフトウェアは、以下のライセンスの元利用できます。
 BSD 2-clause "Simplified" License
 
-�ȉ��A���C�Z���X����
+以下、ライセンス条項
 BSD 2-Clause License
 
 Copyright (c) 2017, frodo821
