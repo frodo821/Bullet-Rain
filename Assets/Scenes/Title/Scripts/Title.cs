@@ -12,6 +12,7 @@ public class Title : MonoBehaviour {
     public Text level;
     public Text exp;
     public Text cash;
+    public ConfirmDialog dialog;
 
     void Start()
     {
@@ -45,12 +46,12 @@ public class Title : MonoBehaviour {
         var top = PlayerPrefs.GetInt("ranktop", -1);
         var second = PlayerPrefs.GetInt("ranksecond", -1);
         var third = PlayerPrefs.GetInt("rankthird", -1);
-        var rankText = top == -1 ? "" : "1. " + top + "pts\n";
-        rankText += second == -1 ? "" : "2. " + second + "pts\n";
-        rankText += third == -1 ? "" : "3. " + third + "pts";
-        if (rankText == "")
+        var rankText = top == -1 ? string.Empty : "1. " + top + "pts\n";
+        rankText += second == -1 ? string.Empty : "2. " + second + "pts\n";
+        rankText += third == -1 ? string.Empty : "3. " + third + "pts";
+        if (rankText == string.Empty)
         {
-            rtitle.text = "";
+            rtitle.text = string.Empty;
         }
         txt.text = rankText;
     }
@@ -78,6 +79,24 @@ public class Title : MonoBehaviour {
         mode = (GameMode)gamemode.value + 1;
         PlayerPrefs.SetInt("difficulty", (int)mode);
     }
+
+    public void Shop()
+    {
+
+    }
+
+    public void ClearGameData()
+    {
+        dialog.ShowDialog("Reset your game",clear , "Are you sure to reset your game? (You can't undo this operation.)");
+    }
+
+    void clear(bool res)
+    {
+        if (!res) return;
+        PlayerPrefs.DeleteAll();
+        ShowRank();
+        ShowUserStats();
+    } 
 }
 
 public enum GameMode

@@ -95,7 +95,7 @@ public class Player : MyScriptBase
         if(levelup)
         {
             maxHitPoint += 100;
-            hitPoint += 100;
+            hitPoint += hitPoint * 100 / maxHitPoint;
             levelup = false;
         }
     }
