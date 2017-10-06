@@ -1,4 +1,4 @@
-#Bullet Rain version 0.0.8
+# Bullet Rain version 0.0.8
 
 ## version 0.0.8からの変更
 + ポーズメニューを追加
