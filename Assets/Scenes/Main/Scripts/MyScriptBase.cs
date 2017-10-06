@@ -12,4 +12,9 @@ public class MyScriptBase : MonoBehaviour
         worldLimitMin = main.ScreenToWorldPoint(new Vector3(0, 0));
         worldLimitMax = main.ScreenToWorldPoint(new Vector3(main.pixelWidth, main.pixelHeight));
     }
+
+    protected virtual void OnFinishedGame(GameObject sender)
+    {
+
+    }
 }

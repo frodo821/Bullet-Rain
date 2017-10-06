@@ -23,6 +23,10 @@ public class Player : MyScriptBase
     public Rect[] GUIRect = { new Rect() };
     public int pharse = 0;
     public Slider hpBar;
+    public Animator anim;
+    public Spawner spawner;
+    public Sprite dead;
+    public SpriteRenderer fadeout;
     public bool highscoreMarked = false;
 
     int count = 0;
@@ -30,11 +34,13 @@ public class Player : MyScriptBase
     float prevScoreAdded = 0f;
     int leastLevelup = 0;
     bool isAlive = true;
+    bool showDiedMenu = false;
 
     // Use this for initialization
     void Start () {
         maxHitPoint = (int)(maxHitPoint * (1 + (float)PlayerStats.level / 20));
         hitPoint = maxHitPoint;
+        anim = GetComponent<Animator>();
         Time.timeScale = 1f;
         GetWorldLimit();
 	}
@@ -68,50 +74,74 @@ public class Player : MyScriptBase
     }
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKey(fire) && Time.time - prevFire > fireInterval)
+        if (isAlive)
         {
-            Instantiate(
-                bullet,
-                transform.position,
-                Quaternion.Euler(0f, 0f, 135f - getAngle()))
-                .GetComponent<Bullet>()
-                .parent = transform;
-            prevFire = Time.time;
+            if (Input.GetKey(fire) && Time.time - prevFire > fireInterval)
+            {
+                Bullet b = Instantiate(
+                    bullet,
+                    transform.position,
+                    Quaternion.Euler(0f, 0f, 135f - getAngle()))
+                    .GetComponent<Bullet>();
+                b.parent = transform;
+                b.transform.parent = transform;
+                prevFire = Time.time;
+            }
+            Move();
+            if (hitPoint <= 0)
+            {
+                isAlive = false;
+                StartCoroutine("onDied");
+                PlayerStats.ApplayEarnedExp(score / 10);
+                PlayerStats.AddCash(score);
+            }
+            CalcScore();
+            hpBar.value = (float)hitPoint / maxHitPoint * 100;
+            if (levelup)
+            {
+                maxHitPoint += 100;
+                hitPoint += hitPoint * 100 / maxHitPoint;
+                levelup = false;
+            }
         }
-        Move();
-        if (hitPoint <= 0 && isAlive)
+    }
+
+    IEnumerator onDied()
+    {
+        spawner.globalRoot.BroadcastMessage("OnFinishedGame", gameObject, SendMessageOptions.DontRequireReceiver);
+        SpriteRenderer r = gameObject.GetComponent<SpriteRenderer>();
+        r.sprite = dead;
+        Color fade = fadeout.color;
+        Color c = r.color;
+        yield return new WaitForSeconds(1f);
+        while (true)
         {
-            SpriteRenderer r = gameObject.GetComponent<SpriteRenderer>();
-            Color c = r.color;
-            r.color = new Color(c.r, c.g, c.b, 0);
-            Time.timeScale = 0;
-            isAlive = false;
-            UIControler.SendMessage("OnFinishedGame", gameObject);
-            PlayerStats.ApplayEarnedExp(score / 10);
-            PlayerStats.AddCash(score);
+            fade.a += 0.01f;
+            c.a -= 0.01f;
+            r.color = c;
+            fadeout.color = fade;
+            yield return new WaitForSeconds(0.01f);
+            if (c.a <= 0) break;
         }
-        CalcScore();
-        hpBar.value = (float)hitPoint / maxHitPoint * 100;
-        if(levelup)
-        {
-            maxHitPoint += 100;
-            hitPoint += hitPoint * 100 / maxHitPoint;
-            levelup = false;
-        }
+        UIControler.SendMessage("OnShowUI", gameObject);
+        showDiedMenu = true;
     }
 
     void OnGUI()
     {
         if (!isAlive)
         {
-            GUI.Label(new Rect(
-                main.pixelWidth / 2 - 250,
-                main.pixelHeight / 2 - 120,
-                500, 240),
-                "You're Destoryed!\nYour Result: "
-                + score
-                + (highscoreMarked? "\nYou're Marked High Score!" : string.Empty),
-                gstyle);
+            if (showDiedMenu)
+            {
+                GUI.Label(new Rect(
+                    main.pixelWidth / 2 - 250,
+                    main.pixelHeight / 2 - 120,
+                    500, 240),
+                    "You're Destoryed!\nYour Result: "
+                    + score
+                    + (highscoreMarked ? "\nYou're Marked High Score!" : string.Empty),
+                    gstyle);
+            }
         }
         else
         {
@@ -138,6 +168,7 @@ public class Player : MyScriptBase
     void OnDamaged(int d = 5)
     {
         hitPoint -= d;
+        anim.SetTrigger("onDamage");
     }
 
     void OnEnemyKilled()
@@ -158,5 +189,10 @@ public class Player : MyScriptBase
         {
             hitPoint = maxHitPoint;
         }
+    }
+
+    override protected void OnFinishedGame(GameObject sender)
+    {
+
     }
 }

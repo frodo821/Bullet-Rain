@@ -28,26 +28,37 @@ public class BulletStyle : MonoBehaviour {
             .GetComponent<Bullet>();
         bc.parent = transform;
         bc.pharse = pharse;
+        bc.transform.parent = transform;
+
         bc = Instantiate(b, transform.position, Quaternion.AngleAxis(37.5f + f * 18, Vector3.forward))
             .GetComponent<Bullet>();
         bc.parent = transform;
         bc.pharse = pharse;
+        bc.transform.parent = transform;
+
         bc = Instantiate(b, transform.position, Quaternion.AngleAxis(67.5f + f * 18, Vector3.forward))
             .GetComponent<Bullet>();
         bc.parent = transform;
         bc.pharse = pharse;
+        bc.transform.parent = transform;
+
         bc = Instantiate(b, transform.position, Quaternion.AngleAxis(97.5f + f * 18, Vector3.forward))
             .GetComponent<Bullet>();
         bc.parent = transform;
         bc.pharse = pharse;
+        bc.transform.parent = transform;
+
         bc = Instantiate(b, transform.position, Quaternion.AngleAxis(127.5f + f * 18, Vector3.forward))
             .GetComponent<Bullet>();
         bc.parent = transform;
         bc.pharse = pharse;
+        bc.transform.parent = transform;
+
         bc = Instantiate(b, transform.position, Quaternion.AngleAxis(157.5f + f * 18, Vector3.forward))
             .GetComponent<Bullet>();
         bc.parent = transform;
         bc.pharse = pharse;
+        bc.transform.parent = transform;
     }
 
     void Forward3(GameObject b, int f)
@@ -61,7 +72,8 @@ public class BulletStyle : MonoBehaviour {
                 .GetComponent<Bullet>();
             bc.pharse = pharse;
             bc.parent = transform;
-            
+            bc.transform.parent = transform;
+
             bc = Instantiate(
                 b, transform.position - new Vector3(1f, 2f),
                 Quaternion.AngleAxis(
@@ -69,6 +81,7 @@ public class BulletStyle : MonoBehaviour {
                 .GetComponent<Bullet>();
             bc.pharse = pharse;
             bc.parent = transform;
+            bc.transform.parent = transform;
 
             bc = Instantiate(
                 b, transform.position - new Vector3(1f, -2f),
@@ -77,6 +90,7 @@ public class BulletStyle : MonoBehaviour {
                 .GetComponent<Bullet>();
             bc.pharse = pharse;
             bc.parent = transform;
+            bc.transform.parent = transform;
         }
     }
 

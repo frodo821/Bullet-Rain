@@ -51,4 +51,9 @@ public class Bullet : MyScriptBase
         col.gameObject.SendMessage("OnDamaged", baseDamage + pharse * damageMultiplier);
         Destroy(gameObject);
     }
+
+    protected override void OnFinishedGame(GameObject sender)
+    {
+        Destroy(this);
+    }
 }

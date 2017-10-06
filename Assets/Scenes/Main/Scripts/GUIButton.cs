@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GUIButton : MonoBehaviour {
-    void OnFinishedGame(GameObject sender)
+
+    void OnShowUI(GameObject sender)
     {
         transform.GetChild(0).gameObject.SetActive(true);
         var score = sender.GetComponent<Player>().score;
