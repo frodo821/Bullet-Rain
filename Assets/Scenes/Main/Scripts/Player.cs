@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,7 +24,7 @@ public class Player : MyScriptBase
     public Slider hpBar;
     public Animator anim;
     public Spawner spawner;
-    public Sprite dead;
+    public bool simulateOnDamage;
     public SpriteRenderer fadeout;
     public bool highscoreMarked = false;
 
@@ -35,8 +34,7 @@ public class Player : MyScriptBase
     int leastLevelup = 0;
     bool isAlive = true;
     bool showDiedMenu = false;
-
-    // Use this for initialization
+    
     void Start () {
         maxHitPoint = (int)(maxHitPoint * (1 + (float)PlayerStats.level / 20));
         hitPoint = maxHitPoint;
@@ -72,7 +70,7 @@ public class Player : MyScriptBase
             transform.Translate(Vector2.down * speed * Time.deltaTime);
         }
     }
-	// Update is called once per frame
+    
 	void Update () {
         if (isAlive)
         {
@@ -84,7 +82,7 @@ public class Player : MyScriptBase
                     Quaternion.Euler(0f, 0f, 135f - getAngle()))
                     .GetComponent<Bullet>();
                 b.parent = transform;
-                b.transform.parent = transform;
+                b.transform.parent = transform.parent;
                 prevFire = Time.time;
             }
             Move();
@@ -97,6 +95,11 @@ public class Player : MyScriptBase
             }
             CalcScore();
             hpBar.value = (float)hitPoint / maxHitPoint * 100;
+            if (simulateOnDamage)
+            {
+                OnDamaged(0);
+                simulateOnDamage = false;
+            }
             if (levelup)
             {
                 maxHitPoint += 100;
@@ -110,7 +113,7 @@ public class Player : MyScriptBase
     {
         spawner.globalRoot.BroadcastMessage("OnFinishedGame", gameObject, SendMessageOptions.DontRequireReceiver);
         SpriteRenderer r = gameObject.GetComponent<SpriteRenderer>();
-        r.sprite = dead;
+        GetComponent<Animator>().SetTrigger("onDied");
         Color fade = fadeout.color;
         Color c = r.color;
         yield return new WaitForSeconds(1f);
@@ -174,7 +177,10 @@ public class Player : MyScriptBase
     void OnEnemyKilled()
     {
         score += 10 * (int)Title.mode;
-        if(hitPoint < maxHitPoint) hitPoint += 1 * (int)Title.mode;
+        int health = (int)Title.mode / 2;
+        health = health <= 0 ? 1 : health;
+        if (hitPoint < maxHitPoint - health)
+            hitPoint += health;
     }
 
     void OnKilledBoss()
@@ -182,8 +188,8 @@ public class Player : MyScriptBase
         score += 50 * (int)Title.mode;
         pharse++;
         BulletStyle.pharse = pharse;
-        if (hitPoint <= maxHitPoint - 20 * (int)Title.mode) {
-            hitPoint += 20 * (int)Title.mode;
+        if (hitPoint <= maxHitPoint - 10 * (int)Title.mode) {
+            hitPoint += 10 * (int)Title.mode;
         }
         else
         {

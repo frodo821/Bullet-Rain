@@ -95,6 +95,7 @@ public class Title : MonoBehaviour {
         if (!res) return;
         PlayerPrefs.DeleteAll();
         ShowRank();
+        PlayerStats.Initialize();
         ShowUserStats();
     } 
 }

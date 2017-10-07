@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerStats {
     public static int UserExp { get; private set; }
@@ -15,6 +13,8 @@ public class PlayerStats {
         level = PlayerPrefs.GetInt("user_level", 0);
         UserCash = PlayerPrefs.GetInt("user_cash", 0);
         earnedUpgrade = PlayerPrefs.GetString("upgrades", string.Empty);
+        Debug.Log("Cur Exp" + UserExp);
+        Debug.Log("Next Exp" + GetCurrentFreeExp(1));
     }
 
     public static string[] GetUpgradesAsArray()
@@ -30,8 +30,8 @@ public class PlayerStats {
     public static int GetRequiredTotallyExp(int lvl)
     {
         if (lvl == 0) return baseExp;
-        return (int)(Mathf.Pow(1.1f, lvl) * baseExp)
-            + GetRequiredTotallyExp(lvl - 1);
+        if (lvl < 0) return 0;
+        return GetRequiredExp(lvl) + GetRequiredTotallyExp(lvl - 1);
     }
 
     public static int GetRequiredExp(int lvl)
@@ -39,16 +39,16 @@ public class PlayerStats {
         return (int)(Mathf.Pow(1.1f, lvl) * baseExp);
     }
 
-    public static int GetRequiredExpToNext(int lvl)
+    /*public static int GetRequiredExpToNext(int lvl)
     {
-        return lvl >= 0 ? GetRequiredExp(lvl) - GetCurrentFreeExp() : 0;
-    }
+        return lvl > 0 ? GetRequiredExp(lvl) - GetCurrentFreeExp() : 0;
+    }*/
 
-    public static int GetCurrentFreeExp()
+    public static int GetCurrentFreeExp(ushort ahead = 0)
     {
-        if (level > 0)
+        if (level > 0 || ahead != 0)
         {
-            return UserExp * 2 - GetRequiredTotallyExp(level - 1);
+            return UserExp - GetRequiredTotallyExp(level + ahead - 1);
         }
         return UserExp;
     }
@@ -62,7 +62,7 @@ public class PlayerStats {
 
     static void levelup()
     {
-        if (GetRequiredExpToNext(level) <= 0)
+        if (GetCurrentFreeExp(1) > 0)
         {
             level++;
             PlayerPrefs.SetInt("user_level", level);

@@ -13,9 +13,9 @@ public class Enemy : MyScriptBase
     public float leastTouchDamageAdded = 0f;
     public float touchDamageInterval = 1f;
     public int touchDamageRatio = 2; 
-    float prev = 0f;
+    public float prev = 0f;
     bool isDead = false;
-    public float fireInterval = 0.1f;
+    public float fireInterval;
     int bulletCount = 0;
     public Slider hpBar = null;
     BulletStyle style;
@@ -26,7 +26,6 @@ public class Enemy : MyScriptBase
         GetWorldLimit();
         maxHp = hitPoint;
         touchDamageInterval /= (int)Title.mode;
-        fireInterval /= (int)Title.mode;
 	}
 	
     void FireBullet(int c)

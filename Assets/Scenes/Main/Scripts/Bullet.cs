@@ -48,7 +48,7 @@ public class Bullet : MyScriptBase
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        col.gameObject.SendMessage("OnDamaged", baseDamage + pharse * damageMultiplier);
+        col.gameObject.SendMessage("OnDamaged", (baseDamage + pharse) * damageMultiplier);
         Destroy(gameObject);
     }
 
