@@ -54,6 +54,7 @@
      <Compile Include="Assets\Scenes\Main\Scripts\MyScriptBase.cs" />
      <Compile Include="Assets\Scenes\Main\Scripts\PauseMenu.cs" />
      <Compile Include="Assets\Scenes\Main\Scripts\Player.cs" />
+     <Compile Include="Assets\Scenes\Main\Scripts\Scroll.cs" />
      <Compile Include="Assets\Scenes\Main\Scripts\Spawner.cs" />
      <Compile Include="Assets\Scenes\Title\Scripts\Title.cs" />
      <Compile Include="Assets\Scripts\ConfirmDialog.cs" />
