@@ -2,9 +2,10 @@
 
 public class Spawner : MyScriptBase {
     public float interval = 5f;
-    public float bossInterval = 60f;
+    public int enemiesDestroyed = 0;
+    public int killToNext = 10;
+    public bool bossPresent = false;
     public float prev;
-    public float prevBoss;
     public GameObject globalRoot;
     public GameObject boss = null;
     public GameObject enemy = null;
@@ -13,7 +14,7 @@ public class Spawner : MyScriptBase {
     void Start () {
         globalRoot = GameObject.Find("GlobalRoot");
         prev = Time.time - interval;
-        prevBoss = Time.time;
+        enemiesDestroyed = 0;
         GetWorldLimit();
         if(Title.mode == 0)
         {
@@ -26,7 +27,7 @@ public class Spawner : MyScriptBase {
         if(Time.time - prev > interval)
         {
             Enemy e;
-            if (Time.time - prevBoss > bossInterval && boss != null)
+            if (enemiesDestroyed >= killToNext && boss != null && !bossPresent)
             {
                 e = Instantiate(
                     boss,
@@ -36,7 +37,10 @@ public class Spawner : MyScriptBase {
                 e.transform.parent = globalRoot.transform;
                 e.fireInterval = 4f / (int)Title.mode;
                 e.hitPoint += BulletStyle.pharse * 2;
-                prevBoss = Time.time;
+                e.spawn = this;
+                enemiesDestroyed = 0;
+                bossPresent = true;
+                killToNext++;
                 return;
             }
             e =Instantiate(
@@ -47,6 +51,7 @@ public class Spawner : MyScriptBase {
             e.transform.parent = globalRoot.transform;
             e.fireInterval = 1f / (int)Title.mode;
             e.hitPoint += BulletStyle.pharse * 2;
+            e.spawn = this;
             prev = Time.time;
         }
     }

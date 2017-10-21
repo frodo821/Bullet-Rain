@@ -51,14 +51,15 @@
      <Compile Include="Assets\Scenes\Main\Scripts\BulletStyle.cs" />
      <Compile Include="Assets\Scenes\Main\Scripts\Enemy.cs" />
      <Compile Include="Assets\Scenes\Main\Scripts\GUIButton.cs" />
+     <Compile Include="Assets\Scenes\Main\Scripts\HomingBullet.cs" />
      <Compile Include="Assets\Scenes\Main\Scripts\MyScriptBase.cs" />
      <Compile Include="Assets\Scenes\Main\Scripts\PauseMenu.cs" />
      <Compile Include="Assets\Scenes\Main\Scripts\Player.cs" />
-     <Compile Include="Assets\Scenes\Main\Scripts\Scroll.cs" />
      <Compile Include="Assets\Scenes\Main\Scripts\Spawner.cs" />
      <Compile Include="Assets\Scenes\Title\Scripts\Title.cs" />
      <Compile Include="Assets\Scripts\ConfirmDialog.cs" />
      <Compile Include="Assets\Scripts\PlayerStats.cs" />
+     <None Include="Assets\Images\scroll.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

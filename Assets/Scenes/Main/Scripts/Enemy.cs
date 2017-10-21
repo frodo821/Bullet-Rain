@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class Enemy : MyScriptBase
 {
     public GameObject bullet = null;
+    public Spawner spawn = null;
     public float speed = 0.2f;
     public int hitPoint = 10;
     private int maxHp;
@@ -16,12 +17,14 @@ public class Enemy : MyScriptBase
     public float prev = 0f;
     bool isDead = false;
     public float fireInterval;
+    public GameObject player;
     int bulletCount = 0;
     public Slider hpBar = null;
     BulletStyle style;
 
     // Use this for initialization
     void Start () {
+        player = GameObject.FindGameObjectWithTag("Player");
         style = gameObject.GetComponent<BulletStyle>();
         GetWorldLimit();
         maxHp = hitPoint;
@@ -43,7 +46,15 @@ public class Enemy : MyScriptBase
         }
         if(hitPoint <= 0)
         {
-            GameObject.FindGameObjectWithTag("Player").SendMessage(isBoss ? "OnKilledBoss" : "OnEnemyKilled");
+            player.SendMessage(isBoss ? "OnKilledBoss" : "OnEnemyKilled");
+            if (!spawn.bossPresent)
+            {
+                spawn.enemiesDestroyed++;
+            }
+            if (isBoss)
+            {
+                spawn.bossPresent = false;
+            }
             isDead = true;
         }
         if (transform.position.x < worldLimitMin.x - 0.6f)
