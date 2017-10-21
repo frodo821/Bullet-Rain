@@ -7,11 +7,16 @@ public class Spawner : MyScriptBase {
     public bool bossPresent = false;
     public float prev;
     public GameObject globalRoot;
+    public int threshold = 10;
     public GameObject boss = null;
+    public GameObject hormingBoss = null;
     public GameObject enemy = null;
+    int mode;
+    int prevPhase;
 
     // Use this for initialization
     void Start () {
+        mode = (int)Title.mode;
         globalRoot = GameObject.Find("GlobalRoot");
         prev = Time.time - interval;
         enemiesDestroyed = 0;
@@ -27,21 +32,40 @@ public class Spawner : MyScriptBase {
         if(Time.time - prev > interval)
         {
             Enemy e;
-            if (enemiesDestroyed >= killToNext && boss != null && !bossPresent)
+            if (enemiesDestroyed >= killToNext & !bossPresent)
             {
-                e = Instantiate(
-                    boss,
-                    new Vector3(worldLimitMax.x + 1f, 0f),
-                    Quaternion.AngleAxis(0, Vector3.forward))
-                    .GetComponent<Enemy>();
-                e.transform.parent = globalRoot.transform;
-                e.fireInterval = 4f / (int)Title.mode;
-                e.hitPoint += BulletStyle.pharse * 2;
-                e.spawn = this;
-                enemiesDestroyed = 0;
-                bossPresent = true;
-                killToNext++;
-                return;
+                if (boss != null && (mode > (int)GameMode.Hard || Player.phase < threshold))
+                {
+                    e = Instantiate(
+                        boss,
+                        new Vector3(worldLimitMax.x + 1f, 0f),
+                        Quaternion.AngleAxis(0, Vector3.forward))
+                        .GetComponent<Enemy>();
+                    e.transform.parent = globalRoot.transform;
+                    e.fireInterval = 4f / mode;
+                    e.hitPoint += Player.phase * mode * 25;
+                    e.spawn = this;
+                    enemiesDestroyed = 0;
+                    bossPresent = true;
+                    killToNext++;
+                    return;
+                }
+                if(hormingBoss != null)
+                {
+                    e = Instantiate(
+                        hormingBoss,
+                        new Vector3(worldLimitMax.x + 1f, 0f),
+                        Quaternion.AngleAxis(0, Vector3.forward))
+                        .GetComponent<Enemy>();
+                    e.transform.parent = globalRoot.transform;
+                    e.fireInterval = 4f / mode;
+                    e.hitPoint += Player.phase * mode * 25;
+                    e.spawn = this;
+                    enemiesDestroyed = 0;
+                    bossPresent = true;
+                    killToNext++;
+                    return;
+                }
             }
             e =Instantiate(
                 enemy,
@@ -49,8 +73,8 @@ public class Spawner : MyScriptBase {
                 Quaternion.AngleAxis(0, Vector3.forward))
                     .GetComponent<Enemy>();
             e.transform.parent = globalRoot.transform;
-            e.fireInterval = 1f / (int)Title.mode;
-            e.hitPoint += BulletStyle.pharse * 2;
+            e.fireInterval = 1f / mode;
+            e.hitPoint += Player.phase * mode * 5;
             e.spawn = this;
             prev = Time.time;
         }

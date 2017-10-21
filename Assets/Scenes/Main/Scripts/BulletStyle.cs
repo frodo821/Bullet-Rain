@@ -5,7 +5,6 @@ public class BulletStyle : MonoBehaviour {
     public Style bulletStyle = Style.Circular6;
     public GameObject globalRoot;
     public MethodInfo fire;
-    public static int pharse;
     Enemy enemy;
 
     void Start()
@@ -33,7 +32,7 @@ public class BulletStyle : MonoBehaviour {
         if(bc == null)
             bc = g.GetComponent<HomingBullet>();
         bc.eparent = enemy;
-        bc.pharse = pharse;
+        bc.phase = Player.phase;
         bc.transform.parent = globalRoot.transform;
 
         g = Instantiate(b, transform.position, Quaternion.AngleAxis(37.5f + f * 18, Vector3.forward));
@@ -41,7 +40,7 @@ public class BulletStyle : MonoBehaviour {
         if (bc == null)
             bc = g.GetComponent<HomingBullet>();
         bc.eparent = enemy;
-        bc.pharse = pharse;
+        bc.phase = Player.phase;
         bc.transform.parent = globalRoot.transform;
 
         g = Instantiate(b, transform.position, Quaternion.AngleAxis(67.5f + f * 18, Vector3.forward));
@@ -49,7 +48,7 @@ public class BulletStyle : MonoBehaviour {
         if (bc == null)
             bc = g.GetComponent<HomingBullet>();
         bc.eparent = enemy;
-        bc.pharse = pharse;
+        bc.phase = Player.phase;
         bc.transform.parent = globalRoot.transform;
 
         g = Instantiate(b, transform.position, Quaternion.AngleAxis(97.5f + f * 18, Vector3.forward));
@@ -57,7 +56,7 @@ public class BulletStyle : MonoBehaviour {
         if (bc == null)
             bc = g.GetComponent<HomingBullet>();
         bc.eparent = enemy;
-        bc.pharse = pharse;
+        bc.phase = Player.phase;
         bc.transform.parent = globalRoot.transform;
 
         g = Instantiate(b, transform.position, Quaternion.AngleAxis(127.5f + f * 18, Vector3.forward));
@@ -65,7 +64,7 @@ public class BulletStyle : MonoBehaviour {
         if (bc == null)
             bc = g.GetComponent<HomingBullet>();
         bc.eparent = enemy;
-        bc.pharse = pharse;
+        bc.phase = Player.phase;
         bc.transform.parent = globalRoot.transform;
 
         g = Instantiate(b, transform.position, Quaternion.AngleAxis(157.5f + f * 18, Vector3.forward));
@@ -73,7 +72,7 @@ public class BulletStyle : MonoBehaviour {
         if (bc == null)
             bc = g.GetComponent<HomingBullet>();
         bc.eparent = enemy;
-        bc.pharse = pharse;
+        bc.phase = Player.phase;
         bc.transform.parent = globalRoot.transform;
     }
 
@@ -88,7 +87,7 @@ public class BulletStyle : MonoBehaviour {
             Bullet bc = g.GetComponent<Bullet>();
             if (bc == null)
                 bc = g.GetComponent<HomingBullet>();
-            bc.pharse = pharse;
+            bc.phase = Player.phase;
             bc.eparent = enemy;
             bc.transform.parent = globalRoot.transform;
 
@@ -99,7 +98,7 @@ public class BulletStyle : MonoBehaviour {
             bc = g.GetComponent<Bullet>();
             if (bc == null)
                 bc = g.GetComponent<HomingBullet>();
-            bc.pharse = pharse;
+            bc.phase = Player.phase;
             bc.eparent = enemy;
             bc.transform.parent = globalRoot.transform;
 
@@ -110,7 +109,7 @@ public class BulletStyle : MonoBehaviour {
             bc = g.GetComponent<Bullet>();
             if (bc == null)
                 bc = g.GetComponent<HomingBullet>();
-            bc.pharse = pharse;
+            bc.phase = Player.phase;
             bc.eparent = enemy;
             bc.transform.parent = globalRoot.transform;
         }

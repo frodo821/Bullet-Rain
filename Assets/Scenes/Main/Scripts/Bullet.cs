@@ -32,7 +32,7 @@ public class Bullet : MyScriptBase
     /// <summary>
     /// game phase
     /// </summary>
-    public int pharse = 0;
+    public int phase = 0;
     
 	void Start () {
         init();
@@ -81,7 +81,7 @@ public class Bullet : MyScriptBase
     
     void OnCollisionEnter2D(Collision2D col)
     {
-        col.gameObject.SendMessage("OnDamaged", (baseDamage + pharse) * damageMultiplier);
+        col.gameObject.SendMessage("OnDamaged", (baseDamage + phase) * damageMultiplier);
         Destroy(gameObject);
     }
     /// <summary>
@@ -90,7 +90,7 @@ public class Bullet : MyScriptBase
     /// <param name="sender">who send this message?</param>
     protected override void OnFinishedGame(GameObject sender)
     {
-        Destroy(this);
+        //Destroy(this);
     }
     /// <summary>
     /// Defines the motion of this on every tick.

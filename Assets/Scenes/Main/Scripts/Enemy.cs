@@ -100,6 +100,6 @@ public class Enemy : MyScriptBase
 
     protected override void OnFinishedGame(GameObject sender)
     {
-        Destroy(this);
+        //Destroy(this);
     }
 }

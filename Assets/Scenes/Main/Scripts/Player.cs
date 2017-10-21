@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class Player : MyScriptBase
 {
+    public static int phase = 0;
     public GameObject bullet = null;
     public float speed = 0.2f;
     public KeyCode fire = KeyCode.Space;
@@ -20,12 +21,12 @@ public class Player : MyScriptBase
     public GUIStyle defstyle;
     public int maxHitPoint = 100;
     public Rect[] GUIRect = { new Rect() };
-    public int pharse = 0;
     public Slider hpBar;
     public Animator anim;
     public Spawner spawner;
     public bool simulateOnDamage;
     public SpriteRenderer fadeout;
+    public int killingLevel = 0;
     public bool highscoreMarked = false;
 
     int count = 0;
@@ -36,6 +37,7 @@ public class Player : MyScriptBase
     bool showDiedMenu = false;
     
     void Start () {
+        phase = 0;
         maxHitPoint = (int)(maxHitPoint * (1 + (float)PlayerStats.level / 20));
         hitPoint = maxHitPoint;
         anim = GetComponent<Animator>();
@@ -82,6 +84,7 @@ public class Player : MyScriptBase
                     Quaternion.Euler(0f, 0f, 135f - getAngle()))
                     .GetComponent<Bullet>();
                 b.parent = transform;
+                b.phase = killingLevel * (int)Title.mode;
                 b.transform.parent = transform.parent;
                 prevFire = Time.time;
             }
@@ -103,8 +106,9 @@ public class Player : MyScriptBase
             if (levelup)
             {
                 maxHitPoint += 100;
-                hitPoint += hitPoint * 100 / maxHitPoint;
+                hitPoint += (int)hpBar.value;
                 levelup = false;
+                killingLevel++;
             }
         }
     }
@@ -150,7 +154,7 @@ public class Player : MyScriptBase
         {
             GUI.Label(GUIRect[0], "HP: " + hitPoint + "/" + maxHitPoint, defstyle);
             GUI.Label(GUIRect[1], "Score: " + score, defstyle);
-            GUI.Label(GUIRect[2], "Phase: " + (pharse + 1), defstyle);
+            GUI.Label(GUIRect[2], "Phase: " + (Player.phase + 1), defstyle);
         }
     }
 
@@ -186,8 +190,7 @@ public class Player : MyScriptBase
     void OnKilledBoss()
     {
         score += 50 * (int)Title.mode;
-        pharse++;
-        BulletStyle.pharse = pharse;
+        phase++;
         if (hitPoint <= maxHitPoint - 10 * (int)Title.mode) {
             hitPoint += 10 * (int)Title.mode;
         }

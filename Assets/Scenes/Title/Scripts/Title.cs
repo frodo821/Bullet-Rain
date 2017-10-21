@@ -8,7 +8,7 @@ public class Title : MonoBehaviour {
     public Text txt;
     public Text rtitle;
     public Dropdown gamemode;
-    public static GameMode mode;
+    public static GameMode mode = GameMode.Normal;
     public Text level;
     public Text exp;
     public Text cash;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HomingBullet: Bullet
@@ -9,6 +10,7 @@ public class HomingBullet: Bullet
     public float startHoming;
     public float endHorming;
     Rigidbody2D rb;
+    public float drag = 5f;
 
     protected override void init()
     {
@@ -17,13 +19,14 @@ public class HomingBullet: Bullet
         startHoming = Time.time + 0.5f;
         endHorming = Time.time + 5.5f;
         rb = GetComponent<Rigidbody2D>();
+        
     }
 
     void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.tag == targetTag)
         {
-            col.gameObject.SendMessage("OnDamaged", (baseDamage + pharse) * damageMultiplier);
+            col.gameObject.SendMessage("OnDamaged", (baseDamage + Player.phase) * damageMultiplier);
         }
         if (excludeTags.Contains(col.gameObject.tag)) return;
         Destroy(gameObject);
@@ -36,38 +39,52 @@ public class HomingBullet: Bullet
     
     protected override void Move()
     {
-        if(startHoming > Time.time || endHorming < Time.time)
+        if(endHorming < Time.time && target != null)
         {
-            if (GetLen(rb.velocity) < 10f)
+            target = null;
+            transform.rotation = Quaternion.AngleAxis(UnityEngine.Random.Range(0f, 360f), Vector3.forward);
+        }
+        //if(startHoming > Time.time || endHorming < Time.time)
+        //{
+        //    rb.velocity = transform.TransformDirection(Vector2.up) * speed * Time.deltaTime * rb.mass * 8;
+        //    return;
+        //}
+        //if (GetLen(rb.velocity) > 5f)
+        //    rb.velocity -= new Vector2(drag, drag) / GetLen(rb.velocity);
+        //Vector2 direction;
+        //direction = new Vector3(tx, ty);
+        //rb.velocity = direction.normalized * speed * Time.deltaTime * rb.mass * 8;
+        if (startHoming < Time.time && target != null) {
+            Vector2 pos = transform.position;
+            Vector2 tpos;
+            try
             {
-                transform.Translate(
-                    transform.TransformDirection(Vector2.up) * (speed / 10) * Time.deltaTime);
+                tpos = target.transform.position;
+                float tx = tpos.x - pos.x;
+                float ty = tpos.y - pos.y;
+                float dir;
+                try
+                {
+                    dir = Mathf.Atan2(ty, tx) * Mathf.Rad2Deg + 240;
+                }
+                catch (DivideByZeroException)
+                {
+                    dir = 0;
+                }
+                transform.rotation = Quaternion.AngleAxis(dir / 2, Vector3.forward);
             }
-            return;
+            catch (NullReferenceException) {
+                target = null;
+                transform.rotation = Quaternion.AngleAxis(UnityEngine.Random.Range(0f, 360f), Vector3.forward);
+            }
+            catch (MissingReferenceException) { }
         }
-        Vector2 pos = transform.position;
-        Vector2 tpos = target.transform.position;
-        float tx = tpos.x - pos.x;
-        float ty = tpos.y - pos.y;
-        Vector2 direction;
-        /*float dx = -0.1f, dy = 0.0f;
-        if (pos.x < tpos.x)
-        {
-            dx = -0.1f;
-        }
-        else if (pos.x > tpos.x)
-        {
-            dx = 0.1f;
-        }
-        if (pos.y < tpos.y)
-        {
-            dy = 0.1f;
-        }
-        else if (pos.y > tpos.y)
-        {
-            dy = -0.1f;
-        }*/
-        direction = new Vector3(tx, ty);
-        rb.velocity = direction.normalized * speed * Time.deltaTime * rb.mass * 8;
+        transform.Translate(transform.TransformDirection(Vector2.up) * speed * Time.deltaTime);
+    }
+
+    protected override void OnFinishedGame(GameObject sender)
+    {
+        //Destroy(rb);
+        //base.OnFinishedGame(sender);
     }
 }
