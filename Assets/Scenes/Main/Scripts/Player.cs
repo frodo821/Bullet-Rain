@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class Player : MyScriptBase
 {
     public static int phase = 0;
+    public static int killingLevel = 0;
     public GameObject bullet = null;
     public float speed = 0.2f;
     public KeyCode fire = KeyCode.Space;
@@ -26,7 +27,6 @@ public class Player : MyScriptBase
     public Spawner spawner;
     public bool simulateOnDamage;
     public SpriteRenderer fadeout;
-    public int killingLevel = 0;
     public bool highscoreMarked = false;
 
     int count = 0;
@@ -38,6 +38,7 @@ public class Player : MyScriptBase
     
     void Start () {
         phase = 0;
+        killingLevel = 0;
         maxHitPoint = (int)(maxHitPoint * (1 + (float)PlayerStats.level / 20));
         hitPoint = maxHitPoint;
         anim = GetComponent<Animator>();
@@ -84,7 +85,7 @@ public class Player : MyScriptBase
                     Quaternion.Euler(0f, 0f, 135f - getAngle()))
                     .GetComponent<Bullet>();
                 b.parent = transform;
-                b.phase = killingLevel * (int)Title.mode;
+                b.phase = (int)Title.mode * phase;
                 b.transform.parent = transform.parent;
                 prevFire = Time.time;
             }

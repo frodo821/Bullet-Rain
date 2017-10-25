@@ -14,7 +14,10 @@ public class PlayerStats {
         UserCash = PlayerPrefs.GetInt("user_cash", 0);
         earnedUpgrade = PlayerPrefs.GetString("upgrades", string.Empty);
         Debug.Log("Cur Exp" + UserExp);
-        Debug.Log("Next Exp" + GetCurrentFreeExp(1));
+        Debug.Log("Next Exp" + GetCurrentFreeExp(level));
+#if UNITY_EDITOR
+        PlayerPrefs.DeleteAll();
+#endif
     }
 
     public static string[] GetUpgradesAsArray()
@@ -39,16 +42,11 @@ public class PlayerStats {
         return (int)(Mathf.Pow(1.1f, lvl) * baseExp);
     }
 
-    /*public static int GetRequiredExpToNext(int lvl)
+    public static int GetCurrentFreeExp(int lvl)
     {
-        return lvl > 0 ? GetRequiredExp(lvl) - GetCurrentFreeExp() : 0;
-    }*/
-
-    public static int GetCurrentFreeExp(ushort ahead = 0)
-    {
-        if (level > 0 || ahead != 0)
+        if (level > 0)
         {
-            return UserExp - GetRequiredTotallyExp(level + ahead - 1);
+            return UserExp - GetRequiredTotallyExp(lvl - 1);
         }
         return UserExp;
     }
@@ -62,7 +60,7 @@ public class PlayerStats {
 
     static void levelup()
     {
-        if (GetCurrentFreeExp(1) > 0)
+        if (GetCurrentFreeExp(level + 1) > 0)
         {
             level++;
             PlayerPrefs.SetInt("user_level", level);

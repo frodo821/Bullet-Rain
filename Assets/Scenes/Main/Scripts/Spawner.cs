@@ -34,20 +34,24 @@ public class Spawner : MyScriptBase {
             Enemy e;
             if (enemiesDestroyed >= killToNext & !bossPresent)
             {
-                if (boss != null && (mode > (int)GameMode.Hard || Player.phase < threshold))
+                print(mode < (int)GameMode.Hard & Player.phase < threshold);
+                if (mode < (int)GameMode.Hard & Player.phase < threshold)
                 {
-                    e = Instantiate(
-                        boss,
-                        new Vector3(worldLimitMax.x + 1f, 0f),
-                        Quaternion.AngleAxis(0, Vector3.forward))
-                        .GetComponent<Enemy>();
-                    e.transform.parent = globalRoot.transform;
-                    e.fireInterval = 4f / mode;
-                    e.hitPoint += Player.phase * mode * 25;
-                    e.spawn = this;
-                    enemiesDestroyed = 0;
-                    bossPresent = true;
-                    killToNext++;
+                    if (boss != null)
+                    {
+                        e = Instantiate(
+                            boss,
+                            new Vector3(worldLimitMax.x + 1f, 0f),
+                            Quaternion.AngleAxis(0, Vector3.forward))
+                            .GetComponent<Enemy>();
+                        e.transform.parent = globalRoot.transform;
+                        e.fireInterval = 4f / mode;
+                        e.hitPoint += Player.killingLevel * Player.phase * mode * 25;
+                        e.spawn = this;
+                        enemiesDestroyed = 0;
+                        bossPresent = true;
+                        killToNext++;
+                    }
                     return;
                 }
                 if(hormingBoss != null)
@@ -58,8 +62,8 @@ public class Spawner : MyScriptBase {
                         Quaternion.AngleAxis(0, Vector3.forward))
                         .GetComponent<Enemy>();
                     e.transform.parent = globalRoot.transform;
-                    e.fireInterval = 4f / mode;
-                    e.hitPoint += Player.phase * mode * 25;
+                    //e.fireInterval = 4f / mode;
+                    e.hitPoint += Player.killingLevel * Player.phase * mode * 25;
                     e.spawn = this;
                     enemiesDestroyed = 0;
                     bossPresent = true;
@@ -74,7 +78,7 @@ public class Spawner : MyScriptBase {
                     .GetComponent<Enemy>();
             e.transform.parent = globalRoot.transform;
             e.fireInterval = 1f / mode;
-            e.hitPoint += Player.phase * mode * 5;
+            e.hitPoint += Player.killingLevel * Player.phase * mode * 5;
             e.spawn = this;
             prev = Time.time;
         }
