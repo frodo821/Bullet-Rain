@@ -1,4 +1,4 @@
-# Bullet Rain version 0.0.9
+# Bullet Rain version 1.0.0
 
 ## version 0.0.9からの変更
 + ボスの種類を追加
