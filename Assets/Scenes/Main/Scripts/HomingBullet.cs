@@ -9,7 +9,7 @@ public class HomingBullet: Bullet
     public List<string> excludeTags = new List<string>();
     public float startHoming;
     public float endHorming;
-    Rigidbody2D rb;
+    //Rigidbody2D rb;
     public float drag = 5f;
 
     protected override void init()
@@ -18,7 +18,7 @@ public class HomingBullet: Bullet
         target = GameObject.FindGameObjectWithTag(targetTag);
         startHoming = Time.time + 0.5f;
         endHorming = Time.time + 5.5f;
-        rb = GetComponent<Rigidbody2D>();
+        //rb = GetComponent<Rigidbody2D>();
         
     }
 
