@@ -155,7 +155,7 @@ public class Player : MyScriptBase
         {
             GUI.Label(GUIRect[0], "HP: " + hitPoint + "/" + maxHitPoint, defstyle);
             GUI.Label(GUIRect[1], "Score: " + score, defstyle);
-            GUI.Label(GUIRect[2], "Phase: " + (Player.phase + 1), defstyle);
+            GUI.Label(GUIRect[2], "Phase: " + (phase + 1), defstyle);
         }
     }
 

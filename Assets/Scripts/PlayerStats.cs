@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
 public class PlayerStats {
-    public static int UserExp { get; private set; }
+    public static int requireExp { get; private set; }
+    public static int freeExp { get; private set; }
     public static int level { get; private set; }
     public const int baseExp = 100;
     public static int UserCash { get; private set; }
@@ -9,12 +10,13 @@ public class PlayerStats {
     
     public static void Initialize()
     {
-        UserExp = PlayerPrefs.GetInt("user_exp", 0);
+        requireExp = PlayerPrefs.GetInt("user_req_exp", baseExp);
+        freeExp = PlayerPrefs.GetInt("user_free_exp", 0);
         level = PlayerPrefs.GetInt("user_level", 0);
         UserCash = PlayerPrefs.GetInt("user_cash", 0);
         earnedUpgrade = PlayerPrefs.GetString("upgrades", string.Empty);
-        Debug.Log("Cur Exp" + UserExp);
-        Debug.Log("Next Exp" + GetCurrentFreeExp(level));
+        Debug.Log("Cur Exp" + freeExp);
+        Debug.Log("Next Exp" + (requireExp - freeExp));
 #if UNITY_EDITOR
         PlayerPrefs.DeleteAll();
 #endif
@@ -30,41 +32,31 @@ public class PlayerStats {
         earnedUpgrade = string.Join(",", upgs);
     }
 
-    public static int GetRequiredTotallyExp(int lvl)
+    public static int GetRequiredExp()
     {
-        if (lvl == 0) return baseExp;
-        if (lvl < 0) return 0;
-        return GetRequiredExp(lvl) + GetRequiredTotallyExp(lvl - 1);
-    }
-
-    public static int GetRequiredExp(int lvl)
-    {
-        return (int)(Mathf.Pow(1.1f, lvl) * baseExp);
-    }
-
-    public static int GetCurrentFreeExp(int lvl)
-    {
-        if (level > 0)
-        {
-            return UserExp - GetRequiredTotallyExp(lvl - 1);
-        }
-        return UserExp;
+        return (int)(Mathf.Pow(1.1f, level) * baseExp);
     }
 
     public static void ApplayEarnedExp(int experience)
     {
-        UserExp += experience;
+        freeExp += experience;
         levelup();
-        PlayerPrefs.SetInt("user_exp", UserExp);
+        PlayerPrefs.SetInt("user_free_exp", freeExp);
     }
 
     static void levelup()
     {
-        if (GetCurrentFreeExp(level + 1) > 0)
+        if (requireExp < freeExp)
         {
             level++;
-            PlayerPrefs.SetInt("user_level", level);
+            freeExp -= requireExp;
+            requireExp = GetRequiredExp();
             levelup();
+        }
+        else
+        {
+            PlayerPrefs.SetInt("user_level", level);
+            PlayerPrefs.SetInt("user_req_exp", requireExp);
         }
     }
 

@@ -10,7 +10,7 @@ public class MyScriptBase : MonoBehaviour
     {
         main = Camera.main;
         worldLimitMin = main.ScreenToWorldPoint(new Vector3(0, 0));
-        worldLimitMax = main.ScreenToWorldPoint(new Vector3(main.pixelWidth, main.pixelHeight));
+        worldLimitMax = main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height));
     }
 
     protected virtual void OnFinishedGame(GameObject sender) { }

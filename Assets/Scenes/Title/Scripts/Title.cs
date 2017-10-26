@@ -35,8 +35,8 @@ public class Title : MonoBehaviour {
     void ShowUserStats()
     {
         level.text = "Level " + PlayerStats.level;
-        var req = PlayerStats.GetRequiredExp(PlayerStats.level);
-        var cur = PlayerStats.GetCurrentFreeExp(PlayerStats.level);
+        var req = PlayerStats.requireExp;
+        var cur = PlayerStats.freeExp;
         exp.text = cur + "/" + req + " exp";
         cash.text = "game cash: " + PlayerStats.UserCash + " coins";
     }
