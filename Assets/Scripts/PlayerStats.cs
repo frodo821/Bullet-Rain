@@ -17,9 +17,9 @@ public class PlayerStats {
         earnedUpgrade = PlayerPrefs.GetString("upgrades", string.Empty);
         Debug.Log("Cur Exp" + freeExp);
         Debug.Log("Next Exp" + (requireExp - freeExp));
-#if UNITY_EDITOR
+/*#if UNITY_EDITOR
         PlayerPrefs.DeleteAll();
-#endif
+#endif*/
     }
 
     public static string[] GetUpgradesAsArray()
