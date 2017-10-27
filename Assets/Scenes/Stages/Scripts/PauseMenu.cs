@@ -4,8 +4,6 @@ using UnityEngine.UI;
 public class PauseMenu : MonoBehaviour {
     public GameObject dialog;
     public bool inPause = false;
-
-	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(KeyCode.Escape))
         {

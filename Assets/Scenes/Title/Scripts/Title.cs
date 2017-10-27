@@ -66,7 +66,7 @@ public class Title : MonoBehaviour {
 
     public void OnGameStartSelected()
     {
-        SceneManager.LoadScene("main");
+        SceneManager.LoadScene("template");
     }
 
     public void QuitGame()

@@ -6,8 +6,6 @@ public class TestAnim : MonoBehaviour {
     public Animator anim;
     public bool onDamage;
     public bool onDie;
-
-	// Use this for initialization
 	void Start () {
         anim = GetComponent<Animator>();
 	}
@@ -25,8 +23,6 @@ public class TestAnim : MonoBehaviour {
             onDie = false;
         }
     }
-	
-	// Update is called once per frame
 	void OnGUI () {
 		if(GUI.Button(new Rect(20, 20, 120, 50), "Damage"))
         {

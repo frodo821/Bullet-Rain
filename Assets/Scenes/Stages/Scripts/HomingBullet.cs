@@ -9,7 +9,6 @@ public class HomingBullet: Bullet
     public List<string> excludeTags = new List<string>();
     public float startHoming;
     public float endHorming;
-    //Rigidbody2D rb;
     public float drag = 5f;
 
     protected override void init()
@@ -18,7 +17,6 @@ public class HomingBullet: Bullet
         target = GameObject.FindGameObjectWithTag(targetTag);
         startHoming = Time.time + 0.5f;
         endHorming = Time.time + 5.5f;
-        //rb = GetComponent<Rigidbody2D>();
         
     }
 
@@ -44,16 +42,6 @@ public class HomingBullet: Bullet
             target = null;
             transform.rotation = Quaternion.AngleAxis(UnityEngine.Random.Range(0f, 360f), Vector3.forward);
         }
-        //if(startHoming > Time.time || endHorming < Time.time)
-        //{
-        //    rb.velocity = transform.TransformDirection(Vector2.up) * speed * Time.deltaTime * rb.mass * 8;
-        //    return;
-        //}
-        //if (GetLen(rb.velocity) > 5f)
-        //    rb.velocity -= new Vector2(drag, drag) / GetLen(rb.velocity);
-        //Vector2 direction;
-        //direction = new Vector3(tx, ty);
-        //rb.velocity = direction.normalized * speed * Time.deltaTime * rb.mass * 8;
         if (startHoming < Time.time && target != null) {
             Vector2 pos = transform.position;
             Vector2 tpos;
@@ -84,7 +72,5 @@ public class HomingBullet: Bullet
 
     protected override void OnFinishedGame(GameObject sender)
     {
-        //Destroy(rb);
-        //base.OnFinishedGame(sender);
     }
 }

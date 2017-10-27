@@ -12,6 +12,8 @@
 *.userprefs
 
 # Build results
+Assets/[Ee]ditor/
+Assets/**/[Ee]ditor/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/

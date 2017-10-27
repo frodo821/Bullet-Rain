@@ -21,8 +21,6 @@ public class Enemy : MyScriptBase
     int bulletCount = 0;
     public Slider hpBar = null;
     BulletStyle style;
-
-    // Use this for initialization
     void Start () {
         player = GameObject.FindGameObjectWithTag("Player");
         style = gameObject.GetComponent<BulletStyle>();
@@ -35,8 +33,6 @@ public class Enemy : MyScriptBase
     {
         style.FireBullet(bullet, c);
     }
-
-	// Update is called once per frame
 	void Update () {
         if(Time.time - prev > fireInterval)
         {
@@ -100,6 +96,5 @@ public class Enemy : MyScriptBase
 
     protected override void OnFinishedGame(GameObject sender)
     {
-        //Destroy(this);
     }
 }

@@ -13,8 +13,6 @@ public class Spawner : MyScriptBase {
     public GameObject enemy = null;
     int mode;
     int prevPhase;
-
-    // Use this for initialization
     void Start () {
         mode = (int)Title.mode;
         globalRoot = GameObject.Find("GlobalRoot");
@@ -26,15 +24,12 @@ public class Spawner : MyScriptBase {
             Title.mode = GameMode.Easy;
         }
     }
-	
-	// Update is called once per frame
 	void Update () {
         if(Time.time - prev > interval)
         {
             Enemy e;
             if (enemiesDestroyed >= killToNext & !bossPresent)
             {
-                print(mode < (int)GameMode.Hard & Player.phase < threshold);
                 if (mode < (int)GameMode.Hard & Player.phase < threshold)
                 {
                     if (boss != null)
@@ -62,7 +57,6 @@ public class Spawner : MyScriptBase {
                         Quaternion.AngleAxis(0, Vector3.forward))
                         .GetComponent<Enemy>();
                     e.transform.parent = globalRoot.transform;
-                    //e.fireInterval = 4f / mode;
                     e.hitPoint += Player.killingLevel * Player.phase * mode * 25;
                     e.spawn = this;
                     enemiesDestroyed = 0;

@@ -1,45 +1,17 @@
 ﻿using UnityEngine;
-
-/// <summary>
-/// The base class of bullets.
-/// </summary>
 public class Bullet : MyScriptBase
 {
-    /// <summary>
-    /// bullet speed
-    /// </summary>
     public float speed = 1f;
-    /// <summary>
-    /// How distance should be bullet destroyed?  
-    /// </summary>
     public float destoryDistance = 10f;
-    /// <summary>
-    /// If this ejected by a enemy, this variable cotains pearent instance.
-    /// </summary>
     public Enemy eparent = null;
-    /// <summary>
-    /// parent transform
-    /// </summary>
     public Transform parent = null;
-    /// <summary>
-    /// The basic damage
-    /// </summary>
     public int baseDamage;
-    /// <summary>
-    /// What value does this damage increase by phase?
-    /// </summary>
     public int damageMultiplier = 1;
-    /// <summary>
-    /// game phase
-    /// </summary>
     public int phase = 0;
     
 	void Start () {
         init();
 	}
-    /// <summary>
-    /// Initialize this component.
-    /// </summary>
     protected virtual void init()
     {
         gameObject.name = "Bullet " + gameObject.GetInstanceID();
@@ -84,17 +56,9 @@ public class Bullet : MyScriptBase
         col.gameObject.SendMessage("OnDamaged", (baseDamage + phase) * damageMultiplier);
         Destroy(gameObject);
     }
-    /// <summary>
-    /// What do this do by the time, the game has finished? 
-    /// </summary>
-    /// <param name="sender">who send this message?</param>
     protected override void OnFinishedGame(GameObject sender)
     {
-        //Destroy(this);
     }
-    /// <summary>
-    /// Defines the motion of this on every tick.
-    /// </summary>
     protected virtual void Move()
     {
         transform.Translate(transform.TransformDirection(Vector2.up) * speed * Time.deltaTime);
