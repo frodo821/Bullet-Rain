@@ -13,6 +13,8 @@ public class Title : MonoBehaviour {
     public Text exp;
     public Text cash;
     public ConfirmDialog dialog;
+    public Image Fadeout;
+    private AsyncOperation async = null;
 
     void Start()
     {
@@ -66,11 +68,32 @@ public class Title : MonoBehaviour {
 
     public void OnGameStartSelected()
     {
-        SceneManager.LoadScene("template");
+        StartCoroutine("GameStart");
+    }
+
+    IEnumerator GameStart()
+    {
+        var col = StartCoroutine("FadeOut");
+        yield return col;
+        async = SceneManager.LoadSceneAsync("template");
+    }
+
+    IEnumerator FadeOut()
+    {
+        Fadeout.gameObject.SetActive(true);
+        var c = Fadeout.color;
+        while (true)
+        {
+            c.a += 0.00001f;
+            Fadeout.color = c;
+            yield return new WaitForEndOfFrame();
+            if (c.a >= 1) break;
+        }
     }
 
     public void QuitGame()
     {
+        PlayerPrefs.Save();
         Application.Quit();
     }
 
