@@ -9,23 +9,51 @@ public class Scenario : MonoBehaviour
 {
     public static string scenarioName = "prologue";
     public static string nextSceneName = "title";
+    public static bool canQueueImage = false;
+    public bool canQueue = false;
     public Button skipall;
     public Text text;
     public Text next;
+    public RawImage back;
+    Queue<Texture2D> bgImages = new Queue<Texture2D>();
     Queue<string> scenario;
     string lt = string.Empty;
     Coroutine scen;
     Coroutine blink;
 
 	void Start () {
+#if UNITY_EDITOR
+        PlayerPrefs.DeleteKey("user_has_ever_played");
+#endif
+        canQueueImage = canQueue;
         scenario = new Queue<string>(
-            Resources.Load<TextAsset>(scenarioName).text.Split(
-                new string[] { "--", "::" }, StringSplitOptions.RemoveEmptyEntries));
-        scen = StartCoroutine("Read");
-        if(PlayerPrefs.GetInt("user_has_ever_played", 0) == 0)
+            Resources.Load<TextAsset>(scenarioName + "/scenario").text.Split(
+                new string[] { "--" }, StringSplitOptions.RemoveEmptyEntries));
+        if (!canQueueImage)
         {
-            skipall.gameObject.SetActive(false);
-            PlayerPrefs.SetInt("user_has_ever_played", 1);
+            back.texture = Resources.Load<Texture2D>(scenarioName + "/main");
+        }else
+        {
+            var idx = 0;
+            while (true)
+            {
+                var tmp = Resources.Load<Texture2D>(scenarioName + "/" + idx);
+                if(tmp == null)
+                {
+                    break;
+                }
+                idx++;
+                bgImages.Enqueue(tmp);
+            }
+        }
+        scen = StartCoroutine("Read");
+        if (scenarioName == "prologue")
+        {
+            if (PlayerPrefs.GetInt("user_has_ever_played", 0) == 0)
+            {
+                skipall.gameObject.SetActive(false);
+                PlayerPrefs.SetInt("user_has_ever_played", 1);
+            }
         }
 	}
 
@@ -57,16 +85,60 @@ public class Scenario : MonoBehaviour
         lt = string.Empty;
         try
         {
-            lt = scenario.Dequeue().Replace("[seh]", "--").Replace("[sec]", "::");
+            lt = scenario.Dequeue().Replace("[seh]", "--");
+            try
+            {
+                if (canQueueImage)
+                {
+                    back.texture = bgImages.Dequeue();
+                }
+            }
+            catch (InvalidOperationException) { }
         }
         catch (InvalidOperationException)
         {
             SceneManager.LoadScene(nextSceneName);
             StopAllCoroutines();
         }
-        var lcs = lt.ToCharArray();
-        foreach (var c in lcs)
+        var lcs = new Queue<char>(lt.ToCharArray());
+        while (true)
         {
+            char c;
+            string nxts = "";
+            try
+            {
+                c = lcs.Dequeue();
+            }
+            catch (InvalidOperationException) { break; }
+            if (c == ':')
+            {
+                nxts += lcs.Dequeue();
+                if (nxts == ":")
+                    yield return new WaitForSeconds(1f);
+                else
+                    text.text += nxts;
+                continue;
+            } else if (c == '[')
+            {
+                var chrs = new string(lcs.ToArray());
+                if (chrs.Split(new char[] { ']'})[0] == "sec")
+                {
+                    while (true)
+                    {
+                        var dec = lcs.Dequeue();
+                        if (dec == ']') break;
+                    }
+                    text.text += ":";
+                    yield return new WaitForSeconds(0.05f);
+                    text.text += ":";
+                    yield return new WaitForSeconds(0.05f);
+                }else
+                {
+                    text.text += "[";
+                    yield return new WaitForSeconds(0.05f);
+                }
+                continue;
+            }
             text.text += c;
             yield return new WaitForSeconds(0.05f);
         }
@@ -75,7 +147,8 @@ public class Scenario : MonoBehaviour
 
     public void Skip()
     {
-        if (text.text == lt)
+        var tlt = lt.Replace("::", "").Replace("[sec]", "::");
+        if (text.text == tlt)
         {
             StopCoroutine(blink);
             next.gameObject.SetActive(false);
@@ -84,7 +157,7 @@ public class Scenario : MonoBehaviour
         else
         {
             StopCoroutine(scen);
-            text.text = lt;
+            text.text = tlt;
             blink = StartCoroutine("Blink");
         }
     }
