@@ -15,8 +15,6 @@ public class PlayerStats {
         level = PlayerPrefs.GetInt("user_level", 0);
         UserCash = PlayerPrefs.GetInt("user_cash", 0);
         earnedUpgrade = PlayerPrefs.GetString("upgrades", string.Empty);
-        Debug.Log("Cur Exp" + freeExp);
-        Debug.Log("Next Exp" + (requireExp - freeExp));
     }
 
     public static string[] GetUpgradesAsArray()

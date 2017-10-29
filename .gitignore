@@ -4,6 +4,9 @@
 # User-specific files
 *.suo
 *.user
+*.ttf
+*.otf
+*.ttc
 *.userosscache
 *.sln.docstates
 *.cmd
@@ -18,10 +21,10 @@ Assets/**/[Ee]ditor/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-dist/
+[Dd]ist/
 x64/
 x86/
-build/
+[Bb]uild/
 bld/
 [Bb]in/
 [Oo]bj/

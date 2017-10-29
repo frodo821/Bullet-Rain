@@ -13,7 +13,7 @@ public class Title : MonoBehaviour {
     public Text exp;
     public Text cash;
     public ConfirmDialog dialog;
-    public Image Fadeout;
+    public Image fadeout;
     private AsyncOperation async = null;
 
     void Start()
@@ -71,24 +71,19 @@ public class Title : MonoBehaviour {
         StartCoroutine("GameStart");
     }
 
-    IEnumerator GameStart()
+    private IEnumerator GameStart()
     {
-        var col = StartCoroutine("FadeOut");
-        yield return col;
-        async = SceneManager.LoadSceneAsync("template");
-    }
-
-    IEnumerator FadeOut()
-    {
-        Fadeout.gameObject.SetActive(true);
-        var c = Fadeout.color;
+        fadeout.color = new Color(0, 0, 0, 0);
+        fadeout.gameObject.SetActive(true);
         while (true)
         {
-            c.a += 0.00001f;
-            Fadeout.color = c;
-            yield return new WaitForEndOfFrame();
-            if (c.a >= 1) break;
+            var c = fadeout.color;
+            c.a += 0.01f;
+            fadeout.color = c;
+            if (fadeout.color.a >= 1) break;
+            yield return new WaitForSecondsRealtime(0.02f);
         }
+        async = SceneManager.LoadSceneAsync("template");
     }
 
     public void QuitGame()

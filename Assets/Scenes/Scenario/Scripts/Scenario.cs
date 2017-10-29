@@ -10,11 +10,12 @@ public class Scenario : MonoBehaviour
     public static string scenarioName = "prologue";
     public static string nextSceneName = "title";
     public static bool canQueueImage = false;
-    public bool canQueue = false;
     public Button skipall;
     public Text text;
     public Text next;
     public RawImage back;
+    public Image blinder;
+    bool sceneLoading = false;
     Queue<Texture2D> bgImages = new Queue<Texture2D>();
     Queue<string> scenario;
     string lt = string.Empty;
@@ -25,7 +26,6 @@ public class Scenario : MonoBehaviour
 #if UNITY_EDITOR
         PlayerPrefs.DeleteKey("user_has_ever_played");
 #endif
-        canQueueImage = canQueue;
         scenario = new Queue<string>(
             Resources.Load<TextAsset>(scenarioName + "/scenario").text.Split(
                 new string[] { "--" }, StringSplitOptions.RemoveEmptyEntries));
@@ -97,8 +97,7 @@ public class Scenario : MonoBehaviour
         }
         catch (InvalidOperationException)
         {
-            SceneManager.LoadScene(nextSceneName);
-            StopAllCoroutines();
+            LoadScene();
         }
         var lcs = new Queue<char>(lt.ToCharArray());
         while (true)
@@ -161,9 +160,32 @@ public class Scenario : MonoBehaviour
             blink = StartCoroutine("Blink");
         }
     }
+
     public void SkipAll()
     {
+        LoadScene();
+    }
+
+    private void LoadScene()
+    {
+        if (sceneLoading) return;
+        sceneLoading = true;
         StopAllCoroutines();
-        SceneManager.LoadScene(nextSceneName);
+        StartCoroutine("Fadeout");
+    }
+
+    private IEnumerator Fadeout()
+    {
+        blinder.color = new Color(0, 0, 0, 0);
+        blinder.gameObject.SetActive(true);
+        while (true)
+        {
+            var c = blinder.color;
+            c.a += 0.01f;
+            blinder.color = c;
+            yield return new WaitForSeconds(0.02f);
+            if (c.a >= 1) break;
+        }
+        var async = SceneManager.LoadSceneAsync(nextSceneName);
     }
 }
